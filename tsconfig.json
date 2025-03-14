@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "ES2024",
+        "strict": true,
+        "moduleResolution": "Node",
+        "esModuleInterop": true,
+        "useDefineForClassFields": true,
+        "skipDefaultLibCheck": true,
+        "module": "ESNext",
+        "baseUrl": ".",
+    },
+    "include": [
+        "src/",
+    ]
+}
