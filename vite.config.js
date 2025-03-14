@@ -5,6 +5,7 @@ import path from 'path';
 export default defineConfig({
     base: './',
     root: path.resolve(__dirname, 'src'),
+    assetsDir: path.resolve(__dirname, 'public'),
     build: {
         modulePreload: false,
         emptyOutDir: true,

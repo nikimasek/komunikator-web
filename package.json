@@ -17,6 +17,7 @@
   "homepage": "https://github.com/nikimasek/komunikator-web#readme",
   "description": "",
   "dependencies": {
+    "bootstrap": "^5.0.2",
     "typescript": "^5.8.2",
     "vanjs-core": "^1.5.3",
     "vite": "^6.2.2"
