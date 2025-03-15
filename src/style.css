@@ -1,6 +1,6 @@
 main {
     display: flex;
-    height: 100vh;
+    height: 100svh;
 }
 main>.grid {
     aspect-ratio: 3/4;

@@ -16,8 +16,14 @@ fetch('./data.zip')
         van.add(document.body, App);
     });
 
-function audio(text: string) {
-    const audio = new Audio('/ahoj.mp3');
+const audios: Record<string, HTMLAudioElement> = {};
+async function audio(text: string) {
+    let audio = audios[text];
+    if (!audio) {
+        await zip.file(text + '.mp3')!
+            .async('blob')
+            .then(x => audio = audios[text] = new Audio(URL.createObjectURL(x)));
+    }
     audio.play();
 }
 
@@ -30,7 +36,7 @@ function App() {
             Array.from(panel.grid, (x) => {
                 const image = img();
                 zip.file(x + '.png')?.async('blob').then(x => image.src = URL.createObjectURL(x))
-                return div({ class: 'card', onclick() { audio(''); } }, image, label(x));
+                return div({ class: 'card', onclick() { audio(x); } }, image, label(x));
             })
         )
     );
