@@ -3,9 +3,14 @@ import van from "vanjs-core";
 
 const { div, img, label, section } = van.tags
 
-export function Panel(zip: JSZip) {
+export function Panel(name: string) {
+    console.log(name);
     const grid = section({ class: 'grid' });
-    zip.file('panel.json')?.async('string')
+    const zip = new JSZip();
+    fetch('./data.zip')
+        .then(x => x.bytes())
+        .then(x => zip.loadAsync(x))
+        .then(x => x.file('panel.json')!.async('string'))
         .then(JSON.parse)
         .then((panel: Panel) => {
             grid.append(

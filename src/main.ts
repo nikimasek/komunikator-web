@@ -1,39 +1,46 @@
 import van from "vanjs-core";
-import JSZip from 'jszip';
 import "bootstrap/dist/css/bootstrap.css"
 import "./style.css";
-import { Panel } from "./panel";
-const { main, div, button, nav, h1, li, ul, section } = van.tags;
+import { Panel } from "./pages/panel";
+import { Home } from "./pages/home";
+import { Navbar } from "./pages/navbar";
+const { main } = van.tags;
+
+type Component = (...params: string[]) => HTMLElement
+
+const routers: [string | RegExp, Component][] = [
+    ['', Home],
+    [/^#panel\/(\w+)\b/, Panel]
+]
 
 function App() {
-    const panel = van.state<JSZip | undefined>();
+    const path = van.state(location.hash);
+    window.addEventListener('hashchange', () => { path.val = location.hash });
+    let params: string[] = [];
+    const component = van.state<Component>(Home);
+    van.derive(() => {
+        const href = path.val;
+        for (const [mask, comp] of routers) {
+            if (typeof mask == 'string' && href === mask) {
+                params = [href];
+                component.val = comp;
+                return;
+            }
+            if (mask instanceof RegExp) {
+                const match = mask.exec(href);
+                if (match) {
+                    params = [...match]
+                    component.val = comp;
+                    return;
+                }
+            }
+        }
+        params = [];
+        component.val = Home;
+    });
 
     return main(
-        nav(
-            h1("Komunikátor"),
-            div({ class: 'dropdown' },
-                button({ class: 'btn btn-secondary dropdown-toggle', tabIndex: -1, onclick(e: Event) { e.stopPropagation() } }),
-                ul({ class: 'dropdown-menu end-0' },
-                    li({ class: 'dropdown-item active' }, 'Demo'),
-                    li({ class: 'dropdown-divider' }),
-                    li({ class: 'dropdown-item' }, 'Nastavení')))),
-        () => {
-            return panel.val
-                ? Panel(panel.val)
-                : section({ class: 'home' },
-                    button({
-                        class: 'btn btn-lg btn-success',
-                        onclick() {
-                            const zip = new JSZip();
-                            fetch('./data.zip')
-                                .then(x => x.bytes())
-                                .then(x => zip.loadAsync(x))
-                                .then(x => panel.val = x);
-                        }
-                    }, 'Demo')
-                )
-        }
-    );
+        Navbar(),
+        () => component.val.apply(params[0], params.slice(1)));
 }
-
 van.add(document.body, App);
