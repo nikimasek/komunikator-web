@@ -4,6 +4,7 @@ import { writeFile, readFile } from 'node:fs/promises';
 import DigestFetch from 'digest-fetch';
 import JSZip from 'jszip';
 const rl = readline.createInterface({ input, output });
+
 type Button = [label: string, files: string];
 
 //Přihlašovací údaje pro TTS v souboru `tool.auth.txt` ve tavru `jmeno;heslo`

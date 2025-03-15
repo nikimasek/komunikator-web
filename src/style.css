@@ -3,13 +3,22 @@ main {
     height: 100svh;
 }
 
-main>.grid {
+main>section {
     margin-top: 50px;
     aspect-ratio: 3/4;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
+}
 
+main>section.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main>section.grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -17,24 +26,24 @@ main>.grid {
     grid-row-gap: 0px;
 }
 
-main>.grid>.card.menu {
+main>section.grid>.card.menu {
     background-color: whitesmoke;
 }
 
-main>.grid>.card {
+main>section.grid>.card {
     aspect-ratio: 1;
     position: relative;
 }
 
-main>.grid>.card>img {
+main>section.grid>.card>img {
     padding: 10%;
 }
 
-main>.grid>.card>label {
+main>section.grid>.card>label {
     position: absolute;
     bottom: 0;
     text-align: center;
-    font-size: xx-large;
+    font-size: x-large;
     width: 100%;
     background-color: #ffffffb8
 }
