@@ -19,6 +19,9 @@ main>.grid>.card {
     aspect-ratio: 1;
     position: relative;
 }
+main>.grid>.card>img {
+    padding: 10%;
+}
 
 main>.grid>.card>label {
     position: absolute;
@@ -26,4 +29,5 @@ main>.grid>.card>label {
     text-align: center;
     font-size: xx-large;
     width: 100%;
+    background-color: #ffffffb8
 }
