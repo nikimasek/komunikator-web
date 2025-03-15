@@ -14,8 +14,10 @@ main>section {
 main>section.home {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+
+main>section.home>a {
+    margin-bottom: 30px;
 }
 
 main>section.grid {
@@ -27,7 +29,7 @@ main>section.grid {
 }
 
 main>section.grid>.card.menu {
-    background-color: whitesmoke;
+    background-color: gray;
 }
 
 main>section.grid>.card {

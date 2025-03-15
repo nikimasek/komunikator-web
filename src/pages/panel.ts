@@ -19,10 +19,9 @@ function renderButtons(buttons: Button[], zip: JSZip, style: string) {
 }
 
 export function Panel(name: string) {
-    console.log(name);
     const grid = section({ class: 'grid' });
     const zip = new JSZip();
-    fetch('./data.zip')
+    fetch(`/plates/${name}.zip`)
         .then(x => x.bytes())
         .then(x => zip.loadAsync(x))
         .then(x => x.file('panel.json')!.async('string'))

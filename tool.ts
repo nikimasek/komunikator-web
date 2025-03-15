@@ -52,6 +52,12 @@ type Panel = {
     }
     zip.file('panel.json', JSON.stringify(panel));
 
-    await zip.generateAsync({ type: 'nodebuffer' }).then(x => writeFile('./src/public/data.zip', x as any));
+    console.log();
+    let name: string;
+    do {
+        name = await rl.question(`name of panel: `);
+    } while (!/^\w+$/.test(name))
+
+    await zip.generateAsync({ type: 'nodebuffer' }).then(x => writeFile(`./src/public/plates/${name}.zip`, x as any));
     rl.close();
 })();

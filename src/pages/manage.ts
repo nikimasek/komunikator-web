@@ -1,5 +1,6 @@
 import van from "vanjs-core";
-const { section, ul, li, a } = van.tags;
+const { section, ul, li, a, button } = van.tags;
+
 
 export function Manage() {
     const allPlates = van.state<string[]>([]);
