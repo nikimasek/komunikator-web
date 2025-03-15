@@ -2,7 +2,7 @@ import van from "vanjs-core";
 import JSZip from 'jszip';
 import "bootstrap/dist/css/bootstrap.css"
 import "./style.css";
-const { main, div, button, img, label } = van.tags;
+const { main, div, button, img, label, nav, h1, li, ul } = van.tags;
 
 type Button = [label: string, filename: string];
 let panel: { grid: Button[] };
@@ -22,18 +22,26 @@ async function audio(file: string) {
     let audio = audios[file];
     if (!audio) {
         await zip.file(file + '.mp3')!
-            .async('blob')
-            .then(x => audio = audios[file] = new Audio(URL.createObjectURL(x)));
+            .async('base64')
+            .then(x => audio = audios[file] = new Audio('data:audio/mpeg;base64,' + x));
     }
     audio.play();
 }
 
 function App() {
     return main(
+        nav(
+            h1("Komunikátor"),
+            div({ class: 'dropdown' },
+                button({ class: 'btn btn-secondary dropdown-toggle', tabIndex: -1 }),
+                ul({ class: 'dropdown-menu end-0' },
+                    li({ class: 'dropdown-item active' }, 'Demo'),
+                    li({ class: 'dropdown-divider' }),
+                    li({ class: 'dropdown-item' }, 'Nastavení')))),
         div({ class: 'grid' },
-            div({ class: 'card' }),
-            div({ class: 'card' }),
-            div({ class: 'card' }),
+            div({ class: 'card menu' }),
+            div({ class: 'card menu' }),
+            div({ class: 'card menu' }),
             Array.from(panel.grid, (x) => {
                 const image = img();
                 zip.file(x[1] + '.png')?.async('blob').then(x => image.src = URL.createObjectURL(x))

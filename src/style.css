@@ -2,7 +2,9 @@ main {
     display: flex;
     height: 100svh;
 }
+
 main>.grid {
+    margin-top: 50px;
     aspect-ratio: 3/4;
     margin-left: auto;
     margin-right: auto;
@@ -15,10 +17,15 @@ main>.grid {
     grid-row-gap: 0px;
 }
 
+main>.grid>.card.menu {
+    background-color: whitesmoke;
+}
+
 main>.grid>.card {
     aspect-ratio: 1;
     position: relative;
 }
+
 main>.grid>.card>img {
     padding: 10%;
 }
@@ -30,4 +37,20 @@ main>.grid>.card>label {
     font-size: xx-large;
     width: 100%;
     background-color: #ffffffb8
+}
+
+main>nav {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    padding: 8px 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dropdown>button:focus+.dropdown-menu,
+.dropdown>button+.dropdown-menu:active {
+    display: block;
 }

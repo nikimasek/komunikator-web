@@ -2,7 +2,6 @@ import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import { writeFile, readFile } from 'node:fs/promises';
 import DigestFetch from 'digest-fetch';
-import removeAccents from "remove-accents";
 import JSZip from 'jszip';
 const rl = readline.createInterface({ input, output });
 type Button = [label: string, files: string];
@@ -30,13 +29,14 @@ type Button = [label: string, files: string];
             if (!file) console.log('file not exist');
         } while (!file);
         const label = (await rl.question(`label (${image}):`)) || image;
+        const body = new URLSearchParams({ engine: 'Oldrich30', text: label, format: 'mp3' }).toString()
         const audio = await client.fetch('https://speechcloud.kky.zcu.cz:8887/tts/v4/synth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'engine=Oldrich30&text=' + label.replace(' ', '+') + '&format=mp3'
+            body
         }).then(x => x.bytes());
 
-        const fileName = removeAccents(label);
+        const fileName = Math.random().toString(16).substring(2, 8);
         zip.file(fileName + '.png', file);
         zip.file(fileName + '.mp3', audio);
         panel.grid.push([label, fileName]);
