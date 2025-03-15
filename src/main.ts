@@ -33,7 +33,7 @@ function App() {
         nav(
             h1("Komunikátor"),
             div({ class: 'dropdown' },
-                button({ class: 'btn btn-secondary dropdown-toggle', tabIndex: -1 }),
+                button({ class: 'btn btn-secondary dropdown-toggle', tabIndex: -1, onclick(e: Event) { e.stopPropagation() } }),
                 ul({ class: 'dropdown-menu end-0' },
                     li({ class: 'dropdown-item active' }, 'Demo'),
                     li({ class: 'dropdown-divider' }),

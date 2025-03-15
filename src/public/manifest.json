@@ -1,0 +1,8 @@
+{
+    "name": "Komunikátor",
+    "description": "Komunikátor",
+    "short_name": "Komunikátor",
+    "start_url": "/",
+    "lang": "cs-CZ",
+    "display": "fullscreen"
+}
