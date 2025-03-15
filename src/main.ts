@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.css"
 import "./style.css";
 const { main, div, button, img, label } = van.tags;
 
-let panel: { grid: [] };
+type Button = [label: string, filename: string];
+let panel: { grid: Button[] };
 
 const zip = new JSZip();
 fetch('./data.zip')
@@ -17,12 +18,12 @@ fetch('./data.zip')
     });
 
 const audios: Record<string, HTMLAudioElement> = {};
-async function audio(text: string) {
-    let audio = audios[text];
+async function audio(file: string) {
+    let audio = audios[file];
     if (!audio) {
-        await zip.file(text + '.mp3')!
+        await zip.file(file + '.mp3')!
             .async('blob')
-            .then(x => audio = audios[text] = new Audio(URL.createObjectURL(x)));
+            .then(x => audio = audios[file] = new Audio(URL.createObjectURL(x)));
     }
     audio.play();
 }
@@ -35,8 +36,8 @@ function App() {
             div({ class: 'card' }),
             Array.from(panel.grid, (x) => {
                 const image = img();
-                zip.file(x + '.png')?.async('blob').then(x => image.src = URL.createObjectURL(x))
-                return div({ class: 'card', onclick() { audio(x); } }, image, label(x));
+                zip.file(x[1] + '.png')?.async('blob').then(x => image.src = URL.createObjectURL(x))
+                return div({ class: 'card', onclick() { audio(x[1]); } }, image, label(x[0]));
             })
         )
     );
