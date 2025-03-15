@@ -3,3 +3,4 @@ package-lock.json
 node_modules
 dist
 src/public/data.zip
+src/public/plates/*

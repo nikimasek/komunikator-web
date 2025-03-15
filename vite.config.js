@@ -12,5 +12,12 @@ export default defineConfig({
         outDir: path.resolve(__dirname, 'dist'),
         assetsDir: './',
         target: ['es2020']
+    },
+    server: {
+        proxy: {
+            '/plates': {
+                target: "http://localhost:3289"
+            },
+        }
     }
 });
