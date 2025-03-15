@@ -3,6 +3,21 @@ import van from "vanjs-core";
 
 const { div, img, label, section } = van.tags
 
+function renderButtons(buttons: Button[], zip: JSZip, style: string) {
+    return Array.from(buttons, ([text, file]) => {
+        const image = img();
+        const card = div({ class: style }, image, label(text))
+        zip.file(file + '.png')?.async('blob')
+            .then(x => image.src = URL.createObjectURL(x));
+        zip.file(file + '.mp3')?.async('base64')
+            .then(x => {
+                const audio = new Audio('data:audio/mpeg;base64,' + x);
+                card.addEventListener('click', audio.play.bind(audio));
+            });
+        return card;
+    });
+}
+
 export function Panel(name: string) {
     console.log(name);
     const grid = section({ class: 'grid' });
@@ -14,21 +29,8 @@ export function Panel(name: string) {
         .then(JSON.parse)
         .then((panel: Panel) => {
             grid.append(
-                div({ class: 'card menu' }),
-                div({ class: 'card menu' }),
-                div({ class: 'card menu' }),
-                ...Array.from(panel.grid, ([text, file]) => {
-                    const image = img();
-                    const card = div({ class: 'card' }, image, label(text))
-                    zip.file(file + '.png')?.async('blob')
-                        .then(x => image.src = URL.createObjectURL(x));
-                    zip.file(file + '.mp3')?.async('base64')
-                        .then(x => {
-                            const audio = new Audio('data:audio/mpeg;base64,' + x);
-                            card.addEventListener('click', audio.play.bind(audio));
-                        });
-                    return card;
-                })
+                ...renderButtons(panel.menu, zip, 'card menu'),
+                ...renderButtons(panel.grid, zip, 'card')
             )
         });
     return grid;

@@ -5,12 +5,17 @@ import DigestFetch from 'digest-fetch';
 import JSZip from 'jszip';
 const rl = readline.createInterface({ input, output });
 
-type Button = [label: string, files: string];
+type Button = [lable: string, file: string]
+type Panel = {
+    grid: Button[];
+    menu: Button[];
+}
 
 //Přihlašovací údaje pro TTS v souboru `tool.auth.txt` ve tavru `jmeno;heslo`
 
 (async () => {
     const zip = new JSZip();
+    await zip.loadAsync(await readFile('./panel.zip'));
     const auth = (await readFile('./tool.auth.txt')).toString().split(';');
     const client = new DigestFetch(auth[0], auth[1]);
 
@@ -19,7 +24,10 @@ type Button = [label: string, files: string];
     console.log(' 1 | 2 | 3 ');
     console.log(' 4 | 5 | 6 ');
     console.log(' 7 | 8 | 9 ');
-    const panel: { grid: Button[] } = { grid: [] };
+    const panel: Panel = {
+        grid: [],
+        menu: [['Chci', 'chci'], ['Nechci', 'nechci'], ['Ještě', 'jeste']]
+    };
 
     for (let i = 1; i <= 9; i++) {
         console.log();
