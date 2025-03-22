@@ -3,12 +3,28 @@ main {
     height: 100svh;
 }
 
+img {
+    max-width: 100%;
+}
+
 main>section {
     margin-top: 50px;
     aspect-ratio: 3/4;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
+}
+
+main>section.edit>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+main>section.edit>div img {
+    padding: 5%;
+}
+main>section.edit>div * {
+    background-color: rgba(255, 255, 255, 0.75) !important;
 }
 
 main>section.home {
@@ -57,7 +73,6 @@ main>nav {
     display: flex;
     flex-direction: row;
     padding: 8px 20px;
-    width: 100%;
     justify-content: space-between;
 }
 

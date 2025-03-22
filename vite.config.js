@@ -18,6 +18,9 @@ export default defineConfig({
             '/plates': {
                 target: "http://localhost:3289"
             },
+            '/voice': {
+                target: "http://localhost:3289"
+            }
         }
     }
 });

@@ -5,12 +5,14 @@ import { Panel } from "./pages/panel";
 import { Home } from "./pages/home";
 import { Navbar } from "./pages/navbar";
 import { Manage } from "./pages/manage";
+import { Edit } from "./pages/edit";
 const { main } = van.tags;
 
 type Component = (...params: string[]) => HTMLElement
 
 const routers: [string | RegExp, Component][] = [
     ['', Home],
+    ['#edit', Edit],
     ['#manage', Manage],
     [/^#panel\/(\w+)\b/, Panel]
 ]
