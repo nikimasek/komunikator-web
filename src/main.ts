@@ -27,20 +27,20 @@ function App() {
         for (const [mask, comp] of routers) {
             if (typeof mask == 'string' && href === mask) {
                 params = [href];
-                component.val = comp;
+                component.val = comp.bind(undefined);
                 return;
             }
             if (mask instanceof RegExp) {
                 const match = mask.exec(href);
                 if (match) {
                     params = [...match]
-                    component.val = comp;
+                    component.val = comp.bind(undefined);
                     return;
                 }
             }
         }
         params = [];
-        component.val = Home;
+        component.val = Home.bind(undefined);
     });
 
     return main(
