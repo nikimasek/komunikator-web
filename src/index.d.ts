@@ -1,7 +1,6 @@
-type Button = [lable: string, file: string]
+type Button = [lable: string, image: string | null, audio: string | null]
 
 type Panel = {
     grid: Button[];
     home: Button[];
-    menu: Button[];
 }

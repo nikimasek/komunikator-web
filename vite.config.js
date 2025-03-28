@@ -15,7 +15,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/plates': {
+            '/panels': {
                 target: "http://localhost:3289"
             },
             '/voice': {

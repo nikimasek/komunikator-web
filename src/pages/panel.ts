@@ -3,34 +3,29 @@ import van from "vanjs-core";
 
 const { div, img, label, section } = van.tags
 
-function renderButtons(buttons: Button[], zip: JSZip, style: string) {
-    return Array.from(buttons, ([text, file]) => {
+function renderButtons(buttons: Button[], zip: JSZip) {
+    return Array.from(buttons, ([text, icon, audio]) => {
         const image = img();
-        const card = div({ class: style }, image, label(text))
-        zip.file(file + '.png')?.async('blob')
-            .then(x => image.src = URL.createObjectURL(x));
-        zip.file(file + '.mp3')?.async('base64')
-            .then(x => {
-                const audio = new Audio('data:audio/mpeg;base64,' + x);
-                card.addEventListener('click', audio.play.bind(audio));
-            });
+        const card = div({ class: 'card' }, image, label(text))
+        icon && zip.file(icon)?.async('base64').then(x => image.src = 'data:image/png;base64,' + x);
+        audio && zip.file(audio)?.async('base64').then(x => {
+            const mp3 = new Audio('data:audio/mpeg;base64,' + x);
+            card.addEventListener('click', () => mp3.play());
+        });
         return card;
     });
 }
 
 export function Panel(name: string) {
     const grid = section({ class: 'grid' });
-    const zip = new JSZip();
-    fetch(`/plates/${name}.zip`)
+    const zip = JSZip();
+    fetch(`/panels/${name}`)
         .then(x => x.bytes())
         .then(x => zip.loadAsync(x))
-        .then(x => x.file('panel.json')!.async('string'))
-        .then(JSON.parse)
-        .then((panel: Panel) => {
-            grid.append(
-                ...renderButtons(panel.menu, zip, 'card menu'),
-                ...renderButtons(panel.grid, zip, 'card')
-            )
-        });
+        .then(x => x.file('panel')!.async('string'))
+        .then<Panel>(x => JSON.parse(x))
+        .then(x => grid.append(
+            ...renderButtons(x.home, zip),
+            ...renderButtons(x.grid, zip)));
     return grid;
 }

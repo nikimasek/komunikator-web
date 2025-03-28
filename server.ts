@@ -13,7 +13,7 @@ app.get('/plates', (_, res) => {
 app.get('/panels/:panel', (req, res) => {
     res.sendFile(path.resolve(panels, req.params.panel + '.zip'))
 });
-app.post('/panel/:panel', (req, res) => {
+app.post('/panels/:panel', (req, res) => {
     new IncomingForm().parse(req, async (_err, _fields, files) => {
         const [file] = files?.panel ?? [];
         copyFile(file.filepath, path.resolve(panels, req.params.panel + '.zip')).then(() => res.send('ok'));

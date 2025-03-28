@@ -11,26 +11,40 @@ function readToDataUrl(file: Blob): Promise<string> {
     });
 }
 
+function initFiles() {
+    const files = new Set<string>();
+    return () => {
+        let file: string;
+        do { file = Math.random().toString(16).substring(2, 8); }
+        while (files.has(file));
+        files.add(file);
+        return file;
+    }
+}
+
 async function save(parent: HTMLElement): Promise<Blob> {
     const zip = JSZip();
-    const panel: Panel = { grid: [], home: [], menu: [] };
-    for (const item of parent.querySelectorAll('div.item')) {
-        const label = item.querySelector<HTMLInputElement>('input[type=text]')!.value;
-        const src = item.querySelector<HTMLImageElement>('img')!.src;
-        let file: string | null = null;
+    const panel: Panel = { grid: [], home: [] };
+    const file = initFiles();
+    for (const card of parent.querySelectorAll('div.item')) {
+        const label = card.querySelector<HTMLInputElement>('input[type=text]')!.value || '';
+        const src = card.querySelector<HTMLImageElement>('img')!.src;
+        const item: Button = [label, null, null];
+        let image: string | undefined = undefined;
         if (src.startsWith('data:')) {
-            file = Math.random().toString(16).substring(2, 8);
-            zip.file(file + '.png', src.substring(src.indexOf(',') + 1), { base64: true });
+            image = item[1] =file();
+            zip.file(image, src.substring(src.indexOf(',') + 1), { base64: true });
         }
-        if (file && label) {
+        if (image && label) {
+            const audio = item[2] = file();
             await fetch('/voice?text=' + encodeURIComponent(label))
                 .then(x => x.bytes())
-                .then(x => zip.file(file + '.mp3', x));
+                .then(x => zip.file(audio, x));
         }
-        panel.grid.push([label, file!]);
+        panel.grid.push(item);
     }
-    zip.file('panel.json', JSON.stringify(panel));
-    return await zip.generateAsync({ type: 'blob' });
+    zip.file('panel', JSON.stringify(panel));
+    return zip.generateAsync({ type: 'blob' });
 }
 
 function saveDialog() {
@@ -47,7 +61,7 @@ function saveDialog() {
             save(editor).then(x => {
                 const body = new FormData();
                 body.set('panel', x);
-                return fetch(`/plates/${name}`, { body, method: 'POST' });
+                return fetch(`/panels/${name}`, { body, method: 'POST' });
             }).then(() => { document.location.href = `#panel/${name}`; })
         }
     }, 'Uložit panel');
