@@ -7,7 +7,7 @@ const __dirname = import.meta.dirname;
 const app = express();
 
 const panels = path.resolve(__dirname, 'panels');
-app.get('/plates', (_, res) => {
+app.get('/panels', (_, res) => {
     readdir(panels).then(files => res.json(files.filter(x => x.endsWith('.zip')).map(x => x.substring(0, x.length - 4))));
 });
 app.get('/panels/:panel', (req, res) => {
